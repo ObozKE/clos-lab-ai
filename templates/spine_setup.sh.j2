@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+# AI Data Center Spine Switch Dataplane Setup
+echo "[INFO] Configuring dataplane on {{ spine.name }}..."
+
+# Enable IP forwarding and L4 multipath hash policy for true ECMP
+sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1 || true
+sysctl -w net.ipv4.fib_multipath_hash_policy=1 >/dev/null 2>&1 || true
+
+# Set Jumbo MTU on fabric interfaces
+{% for peer in spine.peers %}
+ip link set dev {{ peer.spine_port }} mtu {{ fabric.mtu_fabric }} up || true
+{% endfor %}
+
+# Ensure loopback is up
+ip link set dev lo up || true
+
+echo "[SUCCESS] {{ spine.name }} dataplane configured."

@@ -1,0 +1,48 @@
+frr version 8.4
+frr defaults traditional
+hostname {{ spine.name }}
+log stdout informational
+no ipv6 forwarding
+!
+interface lo
+ ip address {{ spine.loopback }}
+!
+{% for peer in spine.peers %}
+interface {{ peer.spine_port }}
+ description to_{{ peer.leaf_name }}_{{ peer.leaf_port }}
+ ip address {{ peer.spine_ip }}/31
+ ip mtu {{ fabric.mtu_fabric }}
+!
+{% endfor %}
+!
+router bgp {{ spine.asn }}
+ bgp router-id {{ spine.router_id }}
+ bgp log-neighbor-changes
+ no bgp default ipv4-unicast
+ bgp bestpath as-path multipath-relax
+ !
+{% for peer in spine.peers %}
+ neighbor {{ peer.leaf_ip }} remote-as {{ peer.leaf_asn }}
+ neighbor {{ peer.leaf_ip }} description {{ peer.leaf_name }}
+ neighbor {{ peer.leaf_ip }} timers 3 9
+ neighbor {{ peer.leaf_ip }} capability extended-nexthop
+{% endfor %}
+ !
+ address-family ipv4 unicast
+  network {{ spine.loopback }}
+{% for peer in spine.peers %}
+  neighbor {{ peer.leaf_ip }} activate
+{% endfor %}
+  maximum-paths 64
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  bgp retain-route-target all
+{% for peer in spine.peers %}
+  neighbor {{ peer.leaf_ip }} activate
+  neighbor {{ peer.leaf_ip }} next-hop-unchanged
+{% endfor %}
+ exit-address-family
+!
+line vty
+!

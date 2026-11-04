@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Containerlab runtime artifacts
+.clab/
+clab-*/
+*.log
+
+# Benchmark temp output and raw dumps
+results/temp/
+*.tmp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env

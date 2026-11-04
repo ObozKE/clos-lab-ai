@@ -1,0 +1,67 @@
+name: {{ fabric.name }}
+
+mgmt:
+  network: clab-mgmt
+  ipv4-subnet: 172.20.20.0/24
+
+topology:
+  kinds:
+    linux:
+      cmd: /bin/sh
+  nodes:
+    # -------------------------------------------------------------
+    # Spines (Underlay eBGP & Overlay EVPN Route Reflectors)
+    # -------------------------------------------------------------
+{% for spine in spines %}
+    {{ spine.name }}:
+      kind: linux
+      image: {{ images.frr }}
+      binds:
+        - configs/{{ spine.name }}/daemons:/etc/frr/daemons
+        - configs/{{ spine.name }}/frr.conf:/etc/frr/frr.conf
+        - configs/{{ spine.name }}/setup.sh:/etc/frr/setup.sh
+      exec:
+        - /bin/sh /etc/frr/setup.sh
+{% endfor %}
+
+    # -------------------------------------------------------------
+    # Leaves (VTEPs, eBGP Underlay, EVPN Symmetric IRB Anycast GW)
+    # -------------------------------------------------------------
+{% for leaf in leaves %}
+    {{ leaf.name }}:
+      kind: linux
+      image: {{ images.frr }}
+      binds:
+        - configs/{{ leaf.name }}/daemons:/etc/frr/daemons
+        - configs/{{ leaf.name }}/frr.conf:/etc/frr/frr.conf
+        - configs/{{ leaf.name }}/setup.sh:/etc/frr/setup.sh
+      exec:
+        - /bin/sh /etc/frr/setup.sh
+{% endfor %}
+
+    # -------------------------------------------------------------
+    # Simulated GPU Compute Hosts
+    # -------------------------------------------------------------
+{% for host in hosts %}
+    {{ host.name }}:
+      kind: linux
+      image: {{ images.host }}
+      binds:
+        - configs/{{ host.name }}/setup.sh:/etc/setup.sh
+      exec:
+        - /bin/sh /etc/setup.sh
+{% endfor %}
+
+  # ---------------------------------------------------------------
+  # Point-to-Point Links (Clos Bipartite Fabric & Host Access)
+  # ---------------------------------------------------------------
+  links:
+    # Spine-Leaf Interconnects
+{% for link in fabric_links %}
+    - endpoints: ["{{ link.spine }}:{{ link.spine_port }}", "{{ link.leaf }}:{{ link.leaf_port }}"]
+{% endfor %}
+
+    # Leaf-Host Interconnects
+{% for host in hosts %}
+    - endpoints: ["{{ host.leaf }}:{{ host.leaf_port }}", "{{ host.name }}:eth1"]
+{% endfor %}
