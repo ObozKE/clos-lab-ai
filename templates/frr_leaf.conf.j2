@@ -21,6 +21,7 @@ router bgp {{ leaf.asn }}
  bgp router-id {{ leaf.router_id }}
  bgp log-neighbor-changes
  no bgp default ipv4-unicast
+ no bgp ebgp-requires-policy
  bgp bestpath as-path multipath-relax
  !
  neighbor {{ leaf.peer_spine1_ip }} remote-as {{ fabric.spine_asn }}
@@ -35,6 +36,7 @@ router bgp {{ leaf.asn }}
  !
  address-family ipv4 unicast
   network {{ leaf.loopback }}
+  redistribute connected
   neighbor {{ leaf.peer_spine1_ip }} activate
   neighbor {{ leaf.peer_spine2_ip }} activate
   maximum-paths 64

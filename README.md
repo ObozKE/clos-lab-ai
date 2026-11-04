@@ -73,30 +73,33 @@ flowchart TD
 
 ## 3. Quickstart
 
-### Prerequisites
-- Linux or WSL2 (Ubuntu 22.04 / 24.04 LTS recommended)
-- Docker CE
-- Containerlab (`curl -sL https://containerlab.dev/setup | sudo bash`)
-- Python 3 with `jinja2` and `pyyaml`
+### Prerequisites & Target Environment
+- **Red Hat Enterprise Linux 9** (or Rocky / AlmaLinux 9) running natively or in **VMware Workstation**. See detailed setup guide: [docs/vmware-rhel9-setup.md](docs/vmware-rhel9-setup.md).
+- Alternatively: Linux (Ubuntu 22.04/24.04) or WSL2.
+- Docker CE & Containerlab (`bash scripts/rhel_bootstrap.sh`).
+- Python 3 with `jinja2` and `pyyaml`.
 
-### Commands
+### Automated Setup & Commands
 ```bash
-# 1. Generate node and switch configurations
+# 1. On fresh RHEL 9 VM: bootstrap Docker CE, Containerlab & kernel modules
+make setup-rhel
+
+# 2. Generate node and switch configurations
 make generate
 
-# 2. Deploy the 14-node fabric
+# 3. Deploy the 14-node fabric
 make up
 
-# 3. Check node status
+# 4. Check node status
 make status
 
-# 4. Verify underlay and overlay state
+# 5. Verify underlay and overlay state
 make verify
 
-# 5. Run the incast benchmark
+# 6. Run the incast benchmark
 make benchmark
 
-# 6. Tear down the fabric
+# 7. Tear down the fabric
 make down
 ```
 

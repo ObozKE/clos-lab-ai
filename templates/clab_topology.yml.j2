@@ -5,9 +5,6 @@ mgmt:
   ipv4-subnet: 172.20.20.0/24
 
 topology:
-  kinds:
-    linux:
-      cmd: /bin/sh
   nodes:
     # -------------------------------------------------------------
     # Spines (Underlay eBGP & Overlay EVPN Route Reflectors)
@@ -17,9 +14,9 @@ topology:
       kind: linux
       image: {{ images.frr }}
       binds:
-        - configs/{{ spine.name }}/daemons:/etc/frr/daemons
-        - configs/{{ spine.name }}/frr.conf:/etc/frr/frr.conf
-        - configs/{{ spine.name }}/setup.sh:/etc/frr/setup.sh
+        - ../configs/{{ spine.name }}/daemons:/etc/frr/daemons
+        - ../configs/{{ spine.name }}/frr.conf:/etc/frr/frr.conf
+        - ../configs/{{ spine.name }}/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
 {% endfor %}
@@ -32,9 +29,9 @@ topology:
       kind: linux
       image: {{ images.frr }}
       binds:
-        - configs/{{ leaf.name }}/daemons:/etc/frr/daemons
-        - configs/{{ leaf.name }}/frr.conf:/etc/frr/frr.conf
-        - configs/{{ leaf.name }}/setup.sh:/etc/frr/setup.sh
+        - ../configs/{{ leaf.name }}/daemons:/etc/frr/daemons
+        - ../configs/{{ leaf.name }}/frr.conf:/etc/frr/frr.conf
+        - ../configs/{{ leaf.name }}/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
 {% endfor %}
@@ -47,7 +44,7 @@ topology:
       kind: linux
       image: {{ images.host }}
       binds:
-        - configs/{{ host.name }}/setup.sh:/etc/setup.sh
+        - ../configs/{{ host.name }}/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
 {% endfor %}

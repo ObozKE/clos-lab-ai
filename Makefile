@@ -5,13 +5,14 @@ CLAB ?= containerlab
 TOPO := topology/fabric.clab.yml
 SPEC := topology/topology.yml
 
-.PHONY: all generate up down status verify benchmark clean help
+.PHONY: all generate up down status verify benchmark clean setup-rhel help
 
 all: help
 
 help:
 	@echo "AI Data Center Spine-Leaf Fabric Digital Twin (Containerlab + FRR)"
 	@echo "----------------------------------------------------------------"
+	@echo "make setup-rhel  - Bootstrap fresh RHEL 9 VM (Docker CE, clab, kernel modules)"
 	@echo "make generate    - Generate configs and clab topology from topology/topology.yml"
 	@echo "make up          - Deploy the 14-node spine-leaf fabric in Containerlab"
 	@echo "make down        - Tear down the fabric and clean up veth/network namespaces"
@@ -19,6 +20,10 @@ help:
 	@echo "make verify      - Run automated health, underlay BGP, and EVPN overlay checks"
 	@echo "make benchmark   - Execute baseline and ECN incast benchmarks"
 	@echo "make clean       - Remove generated configuration artifacts"
+
+setup-rhel:
+	@echo "[*] Provisioning RHEL 9 environment..."
+	@bash scripts/rhel_bootstrap.sh
 
 generate:
 	@echo "[*] Generating configurations from $(SPEC)..."

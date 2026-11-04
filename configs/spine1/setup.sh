@@ -16,5 +16,6 @@ ip link set dev eth4 mtu 9000 up || true
 
 # Ensure loopback is up
 ip link set dev lo up || true
+touch /etc/frr/vtysh.conf 2>/dev/null || true
 
 echo "[SUCCESS] spine1 dataplane configured."

@@ -19,6 +19,7 @@ router bgp {{ spine.asn }}
  bgp router-id {{ spine.router_id }}
  bgp log-neighbor-changes
  no bgp default ipv4-unicast
+ no bgp ebgp-requires-policy
  bgp bestpath as-path multipath-relax
  !
 {% for peer in spine.peers %}
@@ -30,8 +31,10 @@ router bgp {{ spine.asn }}
  !
  address-family ipv4 unicast
   network {{ spine.loopback }}
+  redistribute connected
 {% for peer in spine.peers %}
   neighbor {{ peer.leaf_ip }} activate
+  neighbor {{ peer.leaf_ip }} allowas-in 1
 {% endfor %}
   maximum-paths 64
  exit-address-family

@@ -15,5 +15,6 @@ ip link set dev {{ peer.spine_port }} mtu {{ fabric.mtu_fabric }} up || true
 
 # Ensure loopback is up
 ip link set dev lo up || true
+touch /etc/frr/vtysh.conf 2>/dev/null || true
 
 echo "[SUCCESS] {{ spine.name }} dataplane configured."

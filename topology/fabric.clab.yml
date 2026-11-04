@@ -5,9 +5,6 @@ mgmt:
   ipv4-subnet: 172.20.20.0/24
 
 topology:
-  kinds:
-    linux:
-      cmd: /bin/sh
   nodes:
     # -------------------------------------------------------------
     # Spines (Underlay eBGP & Overlay EVPN Route Reflectors)
@@ -16,18 +13,18 @@ topology:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/spine1/daemons:/etc/frr/daemons
-        - configs/spine1/frr.conf:/etc/frr/frr.conf
-        - configs/spine1/setup.sh:/etc/frr/setup.sh
+        - ../configs/spine1/daemons:/etc/frr/daemons
+        - ../configs/spine1/frr.conf:/etc/frr/frr.conf
+        - ../configs/spine1/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
     spine2:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/spine2/daemons:/etc/frr/daemons
-        - configs/spine2/frr.conf:/etc/frr/frr.conf
-        - configs/spine2/setup.sh:/etc/frr/setup.sh
+        - ../configs/spine2/daemons:/etc/frr/daemons
+        - ../configs/spine2/frr.conf:/etc/frr/frr.conf
+        - ../configs/spine2/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
 
@@ -38,36 +35,36 @@ topology:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/leaf1/daemons:/etc/frr/daemons
-        - configs/leaf1/frr.conf:/etc/frr/frr.conf
-        - configs/leaf1/setup.sh:/etc/frr/setup.sh
+        - ../configs/leaf1/daemons:/etc/frr/daemons
+        - ../configs/leaf1/frr.conf:/etc/frr/frr.conf
+        - ../configs/leaf1/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
     leaf2:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/leaf2/daemons:/etc/frr/daemons
-        - configs/leaf2/frr.conf:/etc/frr/frr.conf
-        - configs/leaf2/setup.sh:/etc/frr/setup.sh
+        - ../configs/leaf2/daemons:/etc/frr/daemons
+        - ../configs/leaf2/frr.conf:/etc/frr/frr.conf
+        - ../configs/leaf2/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
     leaf3:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/leaf3/daemons:/etc/frr/daemons
-        - configs/leaf3/frr.conf:/etc/frr/frr.conf
-        - configs/leaf3/setup.sh:/etc/frr/setup.sh
+        - ../configs/leaf3/daemons:/etc/frr/daemons
+        - ../configs/leaf3/frr.conf:/etc/frr/frr.conf
+        - ../configs/leaf3/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
     leaf4:
       kind: linux
       image: frrouting/frr:v8.4.1
       binds:
-        - configs/leaf4/daemons:/etc/frr/daemons
-        - configs/leaf4/frr.conf:/etc/frr/frr.conf
-        - configs/leaf4/setup.sh:/etc/frr/setup.sh
+        - ../configs/leaf4/daemons:/etc/frr/daemons
+        - ../configs/leaf4/frr.conf:/etc/frr/frr.conf
+        - ../configs/leaf4/setup.sh:/etc/frr/setup.sh
       exec:
         - /bin/sh /etc/frr/setup.sh
 
@@ -78,56 +75,56 @@ topology:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h1/setup.sh:/etc/setup.sh
+        - ../configs/h1/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h2:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h2/setup.sh:/etc/setup.sh
+        - ../configs/h2/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h3:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h3/setup.sh:/etc/setup.sh
+        - ../configs/h3/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h4:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h4/setup.sh:/etc/setup.sh
+        - ../configs/h4/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h5:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h5/setup.sh:/etc/setup.sh
+        - ../configs/h5/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h6:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h6/setup.sh:/etc/setup.sh
+        - ../configs/h6/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h7:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h7/setup.sh:/etc/setup.sh
+        - ../configs/h7/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
     h8:
       kind: linux
       image: wbitt/network-multitool:alpine-minimal
       binds:
-        - configs/h8/setup.sh:/etc/setup.sh
+        - ../configs/h8/setup.sh:/etc/setup.sh
       exec:
         - /bin/sh /etc/setup.sh
 

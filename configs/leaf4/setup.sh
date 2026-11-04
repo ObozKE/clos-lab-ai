@@ -13,6 +13,7 @@ sysctl -w net.ipv4.conf.all.arp_announce=2 >/dev/null 2>&1 || true
 ip link set dev eth1 mtu 9000 up || true
 ip link set dev eth2 mtu 9000 up || true
 ip link set dev lo up || true
+touch /etc/frr/vtysh.conf 2>/dev/null || true
 
 # 1. Create Tenant VRF
 ip link add dev TENANT-A type vrf table 1001 2>/dev/null || true
