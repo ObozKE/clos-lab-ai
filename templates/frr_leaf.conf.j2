@@ -4,18 +4,20 @@ hostname {{ leaf.name }}
 log stdout informational
 no ipv6 forwarding
 !
+vrf {{ fabric.vrf.name }}
+ vni {{ fabric.vrf.l3vni }}
+exit-vrf
+!
 interface lo
  ip address {{ leaf.loopback }}
 !
 interface eth1
  description to_spine1
  ip address {{ leaf.spine1_ip }}/31
- ip mtu {{ fabric.mtu_fabric }}
 !
 interface eth2
  description to_spine2
  ip address {{ leaf.spine2_ip }}/31
- ip mtu {{ fabric.mtu_fabric }}
 !
 router bgp {{ leaf.asn }}
  bgp router-id {{ leaf.router_id }}
@@ -47,10 +49,15 @@ router bgp {{ leaf.asn }}
   neighbor {{ leaf.peer_spine2_ip }} activate
   advertise-all-vni
   advertise-default-gw
+  vni {{ fabric.vlan.l2vni }}
+   rd {{ leaf.router_id }}:{{ fabric.vlan.l2vni }}
+   route-target both {{ fabric.spine_asn }}:{{ fabric.vlan.l2vni }}
+  exit-vni
  exit-address-family
 !
 router bgp {{ leaf.asn }} vrf {{ fabric.vrf.name }}
  bgp router-id {{ leaf.router_id }}
+ no bgp ebgp-requires-policy
  !
  address-family ipv4 unicast
   redistribute connected
@@ -58,6 +65,8 @@ router bgp {{ leaf.asn }} vrf {{ fabric.vrf.name }}
  !
  address-family l2vpn evpn
   advertise ipv4 unicast
+  rd {{ leaf.router_id }}:{{ fabric.vrf.l3vni }}
+  route-target both {{ fabric.spine_asn }}:{{ fabric.vrf.l3vni }}
  exit-address-family
 !
 line vty

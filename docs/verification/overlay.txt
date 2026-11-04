@@ -1,0 +1,584 @@
+==============================================================================
+  AI Data Center Fabric - Stage 3: VXLAN BGP-EVPN Overlay Verification
+  Date: Wed Nov  4 11:33:15 AM UTC 2026
+  Host: localhost.localdomain | Kernel: 5.14.0-687.5.3.el9_8.x86_64
+==============================================================================
+
+------------------------------------------------------------------------------
+ 1. EVPN BGP SESSION STATE SUMMARY (SPINES)
+------------------------------------------------------------------------------
+
+[+] Spine Switch: spine1
+BGP router identifier 10.255.0.1, local AS number 65000 vrf-id 0
+BGP table version 0
+RIB entries 15, using 2880 bytes of memory
+Peers 4, using 2868 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.1        4      65101        82        89        0    0    0 00:02:19           26       32 leaf1
+10.0.0.3        4      65102        82        89        0    0    0 00:02:19           26       32 leaf2
+10.0.0.5        4      65103        82        89        0    0    0 00:02:19           26       32 leaf3
+10.0.0.7        4      65104        82        89        0    0    0 00:02:19           26       32 leaf4
+
+Total number of neighbors 4
+
+[+] Spine Switch: spine2
+BGP router identifier 10.255.0.2, local AS number 65000 vrf-id 0
+BGP table version 0
+RIB entries 15, using 2880 bytes of memory
+Peers 4, using 2868 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.9        4      65101        82        90        0    0    0 00:02:21           26       32 leaf1
+10.0.0.11       4      65102        82        89        0    0    0 00:02:21           26       32 leaf2
+10.0.0.13       4      65103        82        89        0    0    0 00:02:21           26       32 leaf3
+10.0.0.15       4      65104        82        90        0    0    0 00:02:19           26       32 leaf4
+
+Total number of neighbors 4
+
+------------------------------------------------------------------------------
+ 2. EVPN BGP SESSION STATE SUMMARY (LEAVES)
+------------------------------------------------------------------------------
+
+[+] Leaf Switch: leaf1
+BGP router identifier 10.255.1.1, local AS number 65101 vrf-id 0
+BGP table version 0
+RIB entries 17, using 3264 bytes of memory
+Peers 2, using 1434 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.0        4      65000        89        83        0    0    0 00:02:19           18       26 spine1
+10.0.0.8        4      65000        89        82        0    0    0 00:02:21           18       26 spine2
+
+Total number of neighbors 2
+
+[+] Leaf Switch: leaf2
+BGP router identifier 10.255.1.2, local AS number 65102 vrf-id 0
+BGP table version 0
+RIB entries 17, using 3264 bytes of memory
+Peers 2, using 1434 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.2        4      65000        89        83        0    0    0 00:02:19           18       26 spine1
+10.0.0.10       4      65000        89        83        0    0    0 00:02:21           18       26 spine2
+
+Total number of neighbors 2
+
+[+] Leaf Switch: leaf3
+BGP router identifier 10.255.1.3, local AS number 65103 vrf-id 0
+BGP table version 0
+RIB entries 17, using 3264 bytes of memory
+Peers 2, using 1434 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.4        4      65000        89        83        0    0    0 00:02:19           18       26 spine1
+10.0.0.12       4      65000        89        83        0    0    0 00:02:21           18       26 spine2
+
+Total number of neighbors 2
+
+[+] Leaf Switch: leaf4
+BGP router identifier 10.255.1.4, local AS number 65104 vrf-id 0
+BGP table version 0
+RIB entries 17, using 3264 bytes of memory
+Peers 2, using 1434 KiB of memory
+
+Neighbor        V         AS   MsgRcvd   MsgSent   TblVer  InQ OutQ  Up/Down State/PfxRcd   PfxSnt Desc
+10.0.0.6        4      65000        89        83        0    0    0 00:02:19           18       26 spine1
+10.0.0.14       4      65000        89        82        0    0    0 00:02:19           18       26 spine2
+
+Total number of neighbors 2
+
+------------------------------------------------------------------------------
+ 3. EVPN VNI CONFIGURATION & STATUS (ALL LEAVES)
+------------------------------------------------------------------------------
+
+[+] Leaf Switch: leaf1 (VNI Table)
+VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF                           
+10100      L2   vxlan10100            9        10       3               TENANT-A                             
+50001      L3   vxlan50001            3        3        n/a             TENANT-A                             
+
+[+] Leaf Switch: leaf2 (VNI Table)
+VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF                           
+10100      L2   vxlan10100            9        10       3               TENANT-A                             
+50001      L3   vxlan50001            3        3        n/a             TENANT-A                             
+
+[+] Leaf Switch: leaf3 (VNI Table)
+VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF                           
+10100      L2   vxlan10100            9        10       3               TENANT-A                             
+50001      L3   vxlan50001            3        3        n/a             TENANT-A                             
+
+[+] Leaf Switch: leaf4 (VNI Table)
+VNI        Type VxLAN IF              # MACs   # ARPs   # Remote VTEPs  Tenant VRF                           
+10100      L2   vxlan10100            9        10       3               TENANT-A                             
+50001      L3   vxlan50001            3        3        n/a             TENANT-A                             
+
+------------------------------------------------------------------------------
+ 4. EVPN ROUTE TABLE (SAMPLE: LEAF1 & LEAF3)
+    Showing Type-2 (MAC/IP), Type-3 (Multicast), and Type-5 (IP Prefix) routes
+------------------------------------------------------------------------------
+
+[+] BGP EVPN Routes on leaf1:
+BGP table version is 7, local router ID is 10.255.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal
+Origin codes: i - IGP, e - EGP, ? - incomplete
+EVPN type-1 prefix: [1]:[EthTag]:[ESI]:[IPlen]:[VTEP-IP]:[Frag-id]
+EVPN type-2 prefix: [2]:[EthTag]:[MAClen]:[MAC]:[IPlen]:[IP]
+EVPN type-3 prefix: [3]:[EthTag]:[IPlen]:[OrigIP]
+EVPN type-4 prefix: [4]:[ESI]:[IPlen]:[OrigIP]
+EVPN type-5 prefix: [5]:[EthTag]:[IPlen]:[IP]
+
+   Network          Next Hop            Metric LocPrf Weight Path
+                    Extended Community
+Route Distinguisher: 10.255.1.1:10100
+*> [2]:[0]:[48]:[00:00:5e:00:01:01]:[32]:[10.100.0.1]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:12:28:ff:1b:fd:ae Default Gateway
+*> [2]:[0]:[48]:[00:00:5e:00:01:01]:[128]:[fe80::200:5eff:fe00:101]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100 Default Gateway ND:Router Flag
+*> [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100
+*> [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]:[32]:[10.100.0.11]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:12:28:ff:1b:fd:ae
+*> [2]:[0]:[48]:[aa:c1:ab:df:71:87]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100
+*> [2]:[0]:[48]:[aa:c1:ab:df:71:87]:[32]:[10.100.0.12]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:12:28:ff:1b:fd:ae
+*> [3]:[0]:[32]:[10.255.1.1]
+                    10.255.1.1                         32768 i
+                    ET:8 RT:65000:10100
+Route Distinguisher: 10.255.1.1:50001
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.1               0         32768 ?
+                    ET:8 RT:65000:50001 Rmac:12:28:ff:1b:fd:ae
+Route Distinguisher: 10.255.1.2:10100
+*  [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]:[32]:[10.100.0.14]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]:[32]:[10.100.0.14]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:d8:87:15]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:d8:87:15]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:d8:87:15]:[32]:[10.100.0.13]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:d8:87:15]:[32]:[10.100.0.13]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [3]:[0]:[32]:[10.255.1.2]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.2]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.2:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.2                             0 65000 65102 ?
+                    RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.2                             0 65000 65102 ?
+                    RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+Route Distinguisher: 10.255.1.3:10100
+*  [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]:[32]:[10.100.0.15]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+*  [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]:[32]:[10.100.0.15]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+*  [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]:[32]:[10.100.0.16]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+*  [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]:[32]:[10.100.0.16]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+*  [3]:[0]:[32]:[10.255.1.3]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.3]
+                    10.255.1.3                             0 65000 65103 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.3:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.3                             0 65000 65103 ?
+                    RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.3                             0 65000 65103 ?
+                    RT:65000:50001 ET:8 Rmac:4a:b5:9e:4c:6f:e3
+Route Distinguisher: 10.255.1.4:10100
+*  [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*  [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]:[32]:[10.100.0.18]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]:[32]:[10.100.0.18]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*  [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*  [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]:[32]:[10.100.0.17]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]:[32]:[10.100.0.17]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*  [3]:[0]:[32]:[10.255.1.4]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.4]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.4:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.4                             0 65000 65104 ?
+                    RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.4                             0 65000 65104 ?
+                    RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+
+Displayed 26 prefixes (44 paths)
+
+[+] BGP EVPN Routes on leaf3:
+BGP table version is 5, local router ID is 10.255.1.3
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal
+Origin codes: i - IGP, e - EGP, ? - incomplete
+EVPN type-1 prefix: [1]:[EthTag]:[ESI]:[IPlen]:[VTEP-IP]:[Frag-id]
+EVPN type-2 prefix: [2]:[EthTag]:[MAClen]:[MAC]:[IPlen]:[IP]
+EVPN type-3 prefix: [3]:[EthTag]:[IPlen]:[OrigIP]
+EVPN type-4 prefix: [4]:[ESI]:[IPlen]:[OrigIP]
+EVPN type-5 prefix: [5]:[EthTag]:[IPlen]:[IP]
+
+   Network          Next Hop            Metric LocPrf Weight Path
+                    Extended Community
+Route Distinguisher: 10.255.1.1:10100
+*  [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]:[32]:[10.100.0.11]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+*  [2]:[0]:[48]:[aa:c1:ab:ae:c2:de]:[32]:[10.100.0.11]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+*  [2]:[0]:[48]:[aa:c1:ab:df:71:87]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:df:71:87]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:df:71:87]:[32]:[10.100.0.12]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+*  [2]:[0]:[48]:[aa:c1:ab:df:71:87]:[32]:[10.100.0.12]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+*  [3]:[0]:[32]:[10.255.1.1]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.1]
+                    10.255.1.1                             0 65000 65101 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.1:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.1                             0 65000 65101 ?
+                    RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.1                             0 65000 65101 ?
+                    RT:65000:50001 ET:8 Rmac:12:28:ff:1b:fd:ae
+Route Distinguisher: 10.255.1.2:10100
+*  [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]:[32]:[10.100.0.14]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:0d:b3:fd]:[32]:[10.100.0.14]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:d8:87:15]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:d8:87:15]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:d8:87:15]:[32]:[10.100.0.13]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [2]:[0]:[48]:[aa:c1:ab:d8:87:15]:[32]:[10.100.0.13]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*  [3]:[0]:[32]:[10.255.1.2]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.2]
+                    10.255.1.2                             0 65000 65102 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.2:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.2                             0 65000 65102 ?
+                    RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.2                             0 65000 65102 ?
+                    RT:65000:50001 ET:8 Rmac:02:86:bc:13:1f:b0
+Route Distinguisher: 10.255.1.3:10100
+*> [2]:[0]:[48]:[00:00:5e:00:01:01]:[32]:[10.100.0.1]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:4a:b5:9e:4c:6f:e3 Default Gateway
+*> [2]:[0]:[48]:[00:00:5e:00:01:01]:[128]:[fe80::200:5eff:fe00:101]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100 Default Gateway ND:Router Flag
+*> [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100
+*> [2]:[0]:[48]:[aa:c1:ab:9c:4d:a0]:[32]:[10.100.0.15]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:4a:b5:9e:4c:6f:e3
+*> [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100
+*> [2]:[0]:[48]:[aa:c1:ab:b8:07:c3]:[32]:[10.100.0.16]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100 RT:65000:50001 Rmac:4a:b5:9e:4c:6f:e3
+*> [3]:[0]:[32]:[10.255.1.3]
+                    10.255.1.3                         32768 i
+                    ET:8 RT:65000:10100
+Route Distinguisher: 10.255.1.3:50001
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.3               0         32768 ?
+                    ET:8 RT:65000:50001 Rmac:4a:b5:9e:4c:6f:e3
+Route Distinguisher: 10.255.1.4:10100
+*  [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*  [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]:[32]:[10.100.0.18]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [2]:[0]:[48]:[aa:c1:ab:8d:1b:db]:[32]:[10.100.0.18]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*  [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*  [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]:[32]:[10.100.0.17]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [2]:[0]:[48]:[aa:c1:ab:da:b4:f7]:[32]:[10.100.0.17]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*  [3]:[0]:[32]:[10.255.1.4]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+*> [3]:[0]:[32]:[10.255.1.4]
+                    10.255.1.4                             0 65000 65104 i
+                    RT:65000:10100 ET:8
+Route Distinguisher: 10.255.1.4:50001
+*  [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.4                             0 65000 65104 ?
+                    RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+*> [5]:[0]:[24]:[10.100.0.0]
+                    10.255.1.4                             0 65000 65104 ?
+                    RT:65000:50001 ET:8 Rmac:22:f9:7e:51:25:5b
+
+Displayed 26 prefixes (44 paths)
+
+------------------------------------------------------------------------------
+ 5. TENANT VRF ROUTING TABLE (VRF TENANT-A ON LEAF1 & LEAF2)
+------------------------------------------------------------------------------
+
+[+] IPv4 Routing Table for VRF TENANT-A on leaf1:
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF TENANT-A:
+C>* 10.100.0.0/24 is directly connected, vlan100, 00:02:23
+B>* 10.100.0.13/32 [20/0] via 10.255.1.2, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.14/32 [20/0] via 10.255.1.2, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.15/32 [20/0] via 10.255.1.3, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.16/32 [20/0] via 10.255.1.3, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.17/32 [20/0] via 10.255.1.4, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.18/32 [20/0] via 10.255.1.4, vlan501 onlink, weight 1, 00:00:15
+
+[+] IPv4 Routing Table for VRF TENANT-A on leaf2:
+Codes: K - kernel route, C - connected, S - static, R - RIP,
+       O - OSPF, I - IS-IS, B - BGP, E - EIGRP, N - NHRP,
+       T - Table, v - VNC, V - VNC-Direct, A - Babel, F - PBR,
+       f - OpenFabric,
+       > - selected route, * - FIB route, q - queued, r - rejected, b - backup
+       t - trapped, o - offload failure
+
+VRF TENANT-A:
+C>* 10.100.0.0/24 is directly connected, vlan100, 00:02:25
+B>* 10.100.0.11/32 [20/0] via 10.255.1.1, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.12/32 [20/0] via 10.255.1.1, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.15/32 [20/0] via 10.255.1.3, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.16/32 [20/0] via 10.255.1.3, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.17/32 [20/0] via 10.255.1.4, vlan501 onlink, weight 1, 00:00:15
+B>* 10.100.0.18/32 [20/0] via 10.255.1.4, vlan501 onlink, weight 1, 00:00:15
+
+------------------------------------------------------------------------------
+ 6. DISTRIBUTED ANYCAST GATEWAY REACHABILITY (ALL HOSTS -> 10.100.0.1)
+------------------------------------------------------------------------------
+    h1 -> 10.100.0.1 (Anycast GW) [PASS]
+    h2 -> 10.100.0.1 (Anycast GW) [PASS]
+    h3 -> 10.100.0.1 (Anycast GW) [PASS]
+    h4 -> 10.100.0.1 (Anycast GW) [PASS]
+    h5 -> 10.100.0.1 (Anycast GW) [PASS]
+    h6 -> 10.100.0.1 (Anycast GW) [PASS]
+    h7 -> 10.100.0.1 (Anycast GW) [PASS]
+    h8 -> 10.100.0.1 (Anycast GW) [PASS]
+Anycast Gateway Reachability: 8/8 passed
+
+------------------------------------------------------------------------------
+ 7. CROSS-LEAF INTER-HOST PING MATRIX (FULL MESH: 8 HOSTS, 56 PAIRS)
+------------------------------------------------------------------------------
+    h1 -> h2 (10.100.0.12) [PASS]
+    h1 -> h3 (10.100.0.13) [PASS]
+    h1 -> h4 (10.100.0.14) [PASS]
+    h1 -> h5 (10.100.0.15) [PASS]
+    h1 -> h6 (10.100.0.16) [PASS]
+    h1 -> h7 (10.100.0.17) [PASS]
+    h1 -> h8 (10.100.0.18) [PASS]
+    h2 -> h1 (10.100.0.11) [PASS]
+    h2 -> h3 (10.100.0.13) [PASS]
+    h2 -> h4 (10.100.0.14) [PASS]
+    h2 -> h5 (10.100.0.15) [PASS]
+    h2 -> h6 (10.100.0.16) [PASS]
+    h2 -> h7 (10.100.0.17) [PASS]
+    h2 -> h8 (10.100.0.18) [PASS]
+    h3 -> h1 (10.100.0.11) [PASS]
+    h3 -> h2 (10.100.0.12) [PASS]
+    h3 -> h4 (10.100.0.14) [PASS]
+    h3 -> h5 (10.100.0.15) [PASS]
+    h3 -> h6 (10.100.0.16) [PASS]
+    h3 -> h7 (10.100.0.17) [PASS]
+    h3 -> h8 (10.100.0.18) [PASS]
+    h4 -> h1 (10.100.0.11) [PASS]
+    h4 -> h2 (10.100.0.12) [PASS]
+    h4 -> h3 (10.100.0.13) [PASS]
+    h4 -> h5 (10.100.0.15) [PASS]
+    h4 -> h6 (10.100.0.16) [PASS]
+    h4 -> h7 (10.100.0.17) [PASS]
+    h4 -> h8 (10.100.0.18) [PASS]
+    h5 -> h1 (10.100.0.11) [PASS]
+    h5 -> h2 (10.100.0.12) [PASS]
+    h5 -> h3 (10.100.0.13) [PASS]
+    h5 -> h4 (10.100.0.14) [PASS]
+    h5 -> h6 (10.100.0.16) [PASS]
+    h5 -> h7 (10.100.0.17) [PASS]
+    h5 -> h8 (10.100.0.18) [PASS]
+    h6 -> h1 (10.100.0.11) [PASS]
+    h6 -> h2 (10.100.0.12) [PASS]
+    h6 -> h3 (10.100.0.13) [PASS]
+    h6 -> h4 (10.100.0.14) [PASS]
+    h6 -> h5 (10.100.0.15) [PASS]
+    h6 -> h7 (10.100.0.17) [PASS]
+    h6 -> h8 (10.100.0.18) [PASS]
+    h7 -> h1 (10.100.0.11) [PASS]
+    h7 -> h2 (10.100.0.12) [PASS]
+    h7 -> h3 (10.100.0.13) [PASS]
+    h7 -> h4 (10.100.0.14) [PASS]
+    h7 -> h5 (10.100.0.15) [PASS]
+    h7 -> h6 (10.100.0.16) [PASS]
+    h7 -> h8 (10.100.0.18) [PASS]
+    h8 -> h1 (10.100.0.11) [PASS]
+    h8 -> h2 (10.100.0.12) [PASS]
+    h8 -> h3 (10.100.0.13) [PASS]
+    h8 -> h4 (10.100.0.14) [PASS]
+    h8 -> h5 (10.100.0.15) [PASS]
+    h8 -> h6 (10.100.0.16) [PASS]
+    h8 -> h7 (10.100.0.17) [PASS]
+Overlay Ping Matrix: 56/56 passed
+
+------------------------------------------------------------------------------
+ 8. ARP CACHE & ARP SUPPRESSION VERIFICATION
+------------------------------------------------------------------------------
+
+[+] EVPN ARP Cache for L2VNI 10100 on leaf1:
+Number of ARPs (local and remote) known for this VNI: 10
+Flags: I=local-inactive, P=peer-active, X=peer-proxy
+Neighbor                Type   Flags State    MAC               Remote ES/VTEP                 Seq #'s
+10.100.0.17             remote       active   aa:c1:ab:da:b4:f7 10.255.1.4                     0/0
+fe80::200:5eff:fe00:101 local        active   00:00:5e:00:01:01                                0/0
+10.100.0.13             remote       active   aa:c1:ab:d8:87:15 10.255.1.2                     0/0
+10.100.0.1              local        active   00:00:5e:00:01:01                                0/0
+10.100.0.11             local        active   aa:c1:ab:ae:c2:de                                0/0
+10.100.0.15             remote       active   aa:c1:ab:9c:4d:a0 10.255.1.3                     0/0
+10.100.0.18             remote       active   aa:c1:ab:8d:1b:db 10.255.1.4                     0/0
+10.100.0.16             remote       active   aa:c1:ab:b8:07:c3 10.255.1.3                     0/0
+10.100.0.12             local        active   aa:c1:ab:df:71:87                                0/0
+10.100.0.14             remote       active   aa:c1:ab:0d:b3:fd 10.255.1.2                     0/0
+
+[+] Linux Bridge Link Settings (Neigh Suppress) on leaf1:
+4: vxlan10100: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 master br0 state forwarding priority 32 cost 100 
+
+[+] EVPN ARP Cache for L2VNI 10100 on leaf2:
+Number of ARPs (local and remote) known for this VNI: 10
+Flags: I=local-inactive, P=peer-active, X=peer-proxy
+Neighbor                Type   Flags State    MAC               Remote ES/VTEP                 Seq #'s
+10.100.0.17             remote       active   aa:c1:ab:da:b4:f7 10.255.1.4                     0/0
+fe80::200:5eff:fe00:101 local        active   00:00:5e:00:01:01                                0/0
+10.100.0.13             local        active   aa:c1:ab:d8:87:15                                0/0
+10.100.0.1              local        active   00:00:5e:00:01:01                                0/0
+10.100.0.11             remote       active   aa:c1:ab:ae:c2:de 10.255.1.1                     0/0
+10.100.0.15             remote       active   aa:c1:ab:9c:4d:a0 10.255.1.3                     0/0
+10.100.0.18             remote       active   aa:c1:ab:8d:1b:db 10.255.1.4                     0/0
+10.100.0.16             remote       active   aa:c1:ab:b8:07:c3 10.255.1.3                     0/0
+10.100.0.12             remote       active   aa:c1:ab:df:71:87 10.255.1.1                     0/0
+10.100.0.14             local        active   aa:c1:ab:0d:b3:fd                                0/0
+
+[+] Linux Bridge Link Settings (Neigh Suppress) on leaf2:
+4: vxlan10100: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9000 master br0 state forwarding priority 32 cost 100 
+
+==============================================================================
+  STAGE 3 EVPN OVERLAY VERIFICATION PASSED: All 56 paths verified!
+==============================================================================

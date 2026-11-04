@@ -11,7 +11,6 @@ interface lo
 interface {{ peer.spine_port }}
  description to_{{ peer.leaf_name }}_{{ peer.leaf_port }}
  ip address {{ peer.spine_ip }}/31
- ip mtu {{ fabric.mtu_fabric }}
 !
 {% endfor %}
 !
@@ -44,6 +43,7 @@ router bgp {{ spine.asn }}
 {% for peer in spine.peers %}
   neighbor {{ peer.leaf_ip }} activate
   neighbor {{ peer.leaf_ip }} next-hop-unchanged
+  neighbor {{ peer.leaf_ip }} allowas-in 1
 {% endfor %}
  exit-address-family
 !

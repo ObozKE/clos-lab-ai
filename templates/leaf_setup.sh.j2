@@ -6,6 +6,8 @@ echo "[INFO] Configuring dataplane on {{ leaf.name }}..."
 # Sysctl settings
 sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1 || true
 sysctl -w net.ipv4.fib_multipath_hash_policy=1 >/dev/null 2>&1 || true
+sysctl -w net.ipv4.conf.all.rp_filter=0 >/dev/null 2>&1 || true
+sysctl -w net.ipv4.conf.default.rp_filter=0 >/dev/null 2>&1 || true
 sysctl -w net.ipv4.conf.all.arp_ignore=1 >/dev/null 2>&1 || true
 sysctl -w net.ipv4.conf.all.arp_announce=2 >/dev/null 2>&1 || true
 
@@ -27,19 +29,21 @@ ip link set dev br0 mtu {{ fabric.mtu_fabric }} up
 ip link add dev vxlan{{ fabric.vlan.l2vni }} type vxlan id {{ fabric.vlan.l2vni }} local {{ leaf.vtep_ip }} dstport 4789 nolearning 2>/dev/null || true
 ip link set dev vxlan{{ fabric.vlan.l2vni }} mtu {{ fabric.mtu_fabric }} up
 ip link set dev vxlan{{ fabric.vlan.l2vni }} master br0
-bridge vlan add dev vxlan{{ fabric.vlan.l2vni }} vid {{ fabric.vlan.id }} 2>/dev/null || true
+bridge vlan add dev vxlan{{ fabric.vlan.l2vni }} vid {{ fabric.vlan.id }} pvid untagged 2>/dev/null || true
+bridge link set dev vxlan{{ fabric.vlan.l2vni }} neigh_suppress on 2>/dev/null || true
 
 # 4. Create L3VNI VXLAN tunnel interface (VNI 50001 -> VLAN 501 for VRF TENANT-A)
 ip link add dev vxlan{{ fabric.vrf.l3vni }} type vxlan id {{ fabric.vrf.l3vni }} local {{ leaf.vtep_ip }} dstport 4789 nolearning 2>/dev/null || true
 ip link set dev vxlan{{ fabric.vrf.l3vni }} mtu {{ fabric.mtu_fabric }} up
 ip link set dev vxlan{{ fabric.vrf.l3vni }} master br0
-bridge vlan add dev vxlan{{ fabric.vrf.l3vni }} vid {{ fabric.vrf.vlan }} 2>/dev/null || true
+bridge vlan add dev vxlan{{ fabric.vrf.l3vni }} vid {{ fabric.vrf.vlan }} pvid untagged 2>/dev/null || true
 
 # 5. Create L3VNI SVI interface and bind to VRF
 ip link add link br0 name vlan{{ fabric.vrf.vlan }} type vlan id {{ fabric.vrf.vlan }} 2>/dev/null || true
 ip link set dev vlan{{ fabric.vrf.vlan }} master {{ fabric.vrf.name }}
 ip link set dev vlan{{ fabric.vrf.vlan }} mtu {{ fabric.mtu_fabric }} up
 bridge vlan add dev br0 vid {{ fabric.vrf.vlan }} self 2>/dev/null || true
+sysctl -w net.ipv4.conf.vlan{{ fabric.vrf.vlan }}.rp_filter=0 >/dev/null 2>&1 || true
 
 # 6. Create Anycast Gateway SVI for compute VLAN 100
 ip link add link br0 name vlan{{ fabric.vlan.id }} address {{ fabric.vlan.anycast_mac }} type vlan id {{ fabric.vlan.id }} 2>/dev/null || true
@@ -47,6 +51,8 @@ ip addr add {{ fabric.vlan.anycast_gateway }} dev vlan{{ fabric.vlan.id }} 2>/de
 ip link set dev vlan{{ fabric.vlan.id }} master {{ fabric.vrf.name }}
 ip link set dev vlan{{ fabric.vlan.id }} mtu {{ fabric.mtu_host }} up
 bridge vlan add dev br0 vid {{ fabric.vlan.id }} self 2>/dev/null || true
+sysctl -w net.ipv4.conf.vlan{{ fabric.vlan.id }}.rp_filter=0 >/dev/null 2>&1 || true
+sysctl -w net.ipv4.conf.br0.rp_filter=0 >/dev/null 2>&1 || true
 
 # 7. Bind host-facing access ports to bridge with untagged VLAN 100
 {% for host in hosts_on_this_leaf %}

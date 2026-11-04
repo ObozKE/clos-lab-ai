@@ -5,21 +5,23 @@ CLAB ?= containerlab
 TOPO := topology/fabric.clab.yml
 SPEC := topology/topology.yml
 
-.PHONY: all generate up down status verify benchmark clean setup-rhel help
+.PHONY: all generate up down status verify verify-underlay verify-overlay benchmark clean setup-rhel help
 
 all: help
 
 help:
 	@echo "AI Data Center Spine-Leaf Fabric Digital Twin (Containerlab + FRR)"
 	@echo "----------------------------------------------------------------"
-	@echo "make setup-rhel  - Bootstrap fresh RHEL 9 VM (Docker CE, clab, kernel modules)"
-	@echo "make generate    - Generate configs and clab topology from topology/topology.yml"
-	@echo "make up          - Deploy the 14-node spine-leaf fabric in Containerlab"
-	@echo "make down        - Tear down the fabric and clean up veth/network namespaces"
-	@echo "make status      - Display status and details of running lab nodes"
-	@echo "make verify      - Run automated health, underlay BGP, and EVPN overlay checks"
-	@echo "make benchmark   - Execute baseline and ECN incast benchmarks"
-	@echo "make clean       - Remove generated configuration artifacts"
+	@echo "make setup-rhel      - Bootstrap fresh RHEL 9 VM (Docker CE, clab, kernel modules)"
+	@echo "make generate        - Generate configs and clab topology from topology/topology.yml"
+	@echo "make up              - Deploy the 14-node spine-leaf fabric in Containerlab"
+	@echo "make down            - Tear down the fabric and clean up veth/network namespaces"
+	@echo "make status          - Display status and details of running lab nodes"
+	@echo "make verify          - Run full fabric verification (underlay and overlay)"
+	@echo "make verify-underlay - Run eBGP underlay verification matrix"
+	@echo "make verify-overlay  - Run VXLAN BGP-EVPN overlay & inter-host ping matrix"
+	@echo "make benchmark       - Execute baseline and ECN incast benchmarks"
+	@echo "make clean           - Remove generated configuration artifacts"
 
 setup-rhel:
 	@echo "[*] Provisioning RHEL 9 environment..."
@@ -43,9 +45,15 @@ status:
 	@echo "[*] Inspecting Containerlab fabric status..."
 	@sudo $(CLAB) inspect -t $(TOPO)
 
-verify:
-	@echo "[*] Running fabric verification tests..."
-	@bash scripts/verify_fabric.sh
+verify-underlay:
+	@echo "[*] Running eBGP underlay verification..."
+	@bash scripts/verify_underlay.sh
+
+verify-overlay:
+	@echo "[*] Running VXLAN BGP-EVPN overlay verification..."
+	@bash scripts/verify_overlay.sh
+
+verify: verify-underlay verify-overlay
 
 benchmark:
 	@echo "[*] Running incast congestion benchmark..."
